@@ -15,41 +15,42 @@ import Logo from "./assets/burger.svg";
 import Trash from "./assets/trash.svg";
 
 const App = () => {
-  //const users = [];
-
   const [users, setOrders] = useState([]);
   const inputOrders = useRef();
   const inputName = useRef();
 
   async function addNewOrder() {
-    const { data: newOrder } = await axios.post("http://localhost:3001/order", {
+    const { data: newOrder } = await axios.post("http://localhost:3000/order", {
       order: inputOrders.current.value,
       clientName: inputName.current.value,
     });
     console.log(newOrder);
-    setOrders([...users, newOrder]);
+    setOrders((prevOrders) => {
+      if (!Array.isArray(prevOrders)) {
+        return [newOrder];
+      }
+      return [...prevOrders, newOrder];
+    });
   }
 
   useEffect(() => {
     async function fetchOrders() {
       const { data: newClients } = await axios.get(
-        "http://localhost:3001/order"
+        "http://localhost:3000/order"
       );
-
       setOrders(newClients);
     }
     fetchOrders();
-  }, [users]);
+  }, []);
 
   function deleteOrder(userId) {
     const newOrders = users.filter((order) => order.id !== userId);
-
     setOrders(newOrders);
   }
+
   return (
     <Containner>
       <Image alt="logo-codeclub" src={Logo} />
-
       <H1>Faça Seu Pedido !!</H1>
       <ContainnerItens>
         <InputLabel>Pedido</InputLabel>
@@ -61,15 +62,18 @@ const App = () => {
         <Button onClick={addNewOrder}>Novo Pedido</Button>
 
         <ul>
-          {users.map((order) => (
-            <Order key={order.id}>
-              <p>{order.orders}</p>
-              <ClientName>{order.name}</ClientName>
-              <button onClick={() => deleteOrder(order.id)}>
-                <img src={Trash} alt="trash-can" />
-              </button>
-            </Order>
-          ))}
+          {users.length > 0 &&
+            users.map((order) => (
+              <Order key={order.id}>
+                <p>{order.order}</p>{" "}
+                {/* Corrigido para exibir o texto do pedido */}
+                <ClientName>{order.clientName}</ClientName>{" "}
+                {/* Corrigido para exibir o nome do cliente */}
+                <button onClick={() => deleteOrder(order.id)}>
+                  <img src={Trash} alt="trash-can" />
+                </button>
+              </Order>
+            ))}
         </ul>
       </ContainnerItens>
     </Containner>
