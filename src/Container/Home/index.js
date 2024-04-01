@@ -12,22 +12,18 @@ import {
 import Logo from "../../assets/burger.svg";
 
 const App = () => {
-  const [, setOrders] = useState([]);
+  const [setOrders,setClientOrders] = useState([]);
   const inputOrders = useRef();
   const inputName = useRef();
 
   async function addNewOrder() {
-    const { data: newOrder } = await axios.post("http://localhost:3000/order", {
+    const { data: newOrder } = await axios.post("http://localhost:3001/order", {
       order: inputOrders.current.value,
       clientName: inputName.current.value,
     });
-    console.log(newOrder);
-    setOrders((prevOrders) => {
-      if (!Array.isArray(prevOrders)) {
-        return [newOrder];
-      }
-      return [...prevOrders, newOrder];
-    });
+    
+    setClientOrders([...setOrders, newOrder])
+
   }
 
   return (
