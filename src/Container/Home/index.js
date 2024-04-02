@@ -1,18 +1,20 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { H1 } from "../../Components/Title/styles";
+import { Button } from "../../Components/Buttons/styles";
 import {
-  Containner,
-  H1,
+  Containner,  
   Image,
   ContainnerItens,
   InputLabel,
   Input,
-  Button,
 } from "./styles";
 import Logo from "../../assets/burger.svg";
 
 const App = () => {
-  const [setOrders,setClientOrders] = useState([]);
+  const [setOrders, setClientOrders] = useState([]);
+  const history = useHistory();
   const inputOrders = useRef();
   const inputName = useRef();
 
@@ -21,9 +23,10 @@ const App = () => {
       order: inputOrders.current.value,
       clientName: inputName.current.value,
     });
-    
-    setClientOrders([...setOrders, newOrder])
 
+    setClientOrders([...setOrders, newOrder]);
+
+    history.push("/pedidos");
   }
 
   return (
@@ -37,7 +40,7 @@ const App = () => {
         <InputLabel>Nome do Cliente</InputLabel>
         <Input ref={inputName} placeholder="Nome" />
 
-        <Button to="/pedidos" onClick={addNewOrder}>Novo Pedido</Button>
+        <Button onClick={addNewOrder}>Novo Pedido</Button>
       </ContainnerItens>
     </Containner>
   );

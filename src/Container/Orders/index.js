@@ -1,35 +1,42 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { Button } from "../../Components/Buttons/styles";
 import {
   Containner,
-  H1,
   Image,
   ContainnerItens,
-  Button,
   Order,
   ClientName,
 } from "./styles";
 import Package from "../../assets/package.svg";
 import Trash from "../../assets/trash.svg";
+import { H1 } from "../../Components/Title/styles";
 
 const Orders = () => {
-  const [users, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchOrders() {
-      const { data: newClients } = await axios.get(
+      const { data: newOrders } = await axios.get(
         "http://localhost:3001/order"
       );
-      setOrders(newClients);
+      setOrders(newOrders);
     }
     fetchOrders();
   }, []);
 
-  async function deleteOrder(userId) {
-    await axios.delete(`http://localhost:3001/order/${userId}`);
+  async function deleteOrder(orderId) {
+    await axios.delete(`http://localhost:3001/order/${orderId}`);
 
-    const newOrders = users.filter((order) => order.id !== userId);
+    const newOrders = orders.filter((order) => order.id !== orderId);
     setOrders(newOrders);
+  }
+
+  function goBackPage() {
+    history.push("/");
   }
 
   return (
@@ -38,20 +45,19 @@ const Orders = () => {
       <H1> Pedidos </H1>
       <ContainnerItens>
         <ul>
-          {users.length > 0 &&
-            users.map((order) => (
+          {orders.length > 0 &&
+            orders.map((order) => (
               <Order key={order.id}>
-                <p>{order.order}</p>{" "}
-                {/* Corrigido para exibir o texto do pedido */}
-                <ClientName>{order.clientName}</ClientName>{" "}
-                {/* Corrigido para exibir o nome do cliente */}
+                <p>{order.order}</p> <ClientName>{order.clientName}</ClientName>{" "}
                 <button onClick={() => deleteOrder(order.id)}>
                   <img src={Trash} alt="trash-can" />
                 </button>
               </Order>
             ))}
         </ul>
-        <Button to="/">Voltar</Button>
+        <Button isBack={true} onClick={goBackPage}>
+          Voltar
+        </Button>
       </ContainnerItens>
     </Containner>
   );

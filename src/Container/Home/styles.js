@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+
 
 export const Containner = styled.div`
   background: #0a0a10;
@@ -12,16 +12,7 @@ export const Containner = styled.div`
 export const Image = styled.img`
   margin-top: 30px;
 `;
-export const H1 = styled.h1`
-  color: #ffffff;
-  size: 28px;
 
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 33px;
-  letter-spacing: 0px;
-  text-align: center;
-`;
 
 export const ContainnerItens = styled.div`
   padding: 20px 36px;
@@ -60,28 +51,4 @@ export const Input = styled.input`
   color: #ffffff;
 `;
 
-export const Button = styled(Link)`
-  width: 342px;
-  height: 68px;
-  margin-top: 100px;
-  gap: 14px;
 
-  background: #d93856;
-  border: none;
-
-  font-size: 17px;
-  font-weight: 900;
-  line-height: 60px;
-  letter-spacing: 0px;
-  text-align: center;
-  color: #ffffff;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  &:active {
-    opacity: 0.5;
-  }
-`;
